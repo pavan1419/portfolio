@@ -3,100 +3,93 @@ import { motion } from 'framer-motion';
 import { Briefcase } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
-interface ExperienceItem {
-  title: string;
-  company: string;
-  date: string;
-  description: string[];
-}
-
 interface ExperienceProps {
-  experiences?: ExperienceItem[];
-  theme?: string;
+  theme: string;
 }
 
-const experiences = [
-  {
-    title: "Full Stack Developer Intern",
-    company: "Tata Advanced Systems",
-    date: "June 2022 - August 2022",
-    description: [
-      "Developed and maintained web applications using Mendix low-code platform",
-      "Implemented RESTful APIs for data integration",
-      "Collaborated with cross-functional teams to deliver high-quality software solutions",
-      "Participated in code reviews and contributed to improving development processes"
-    ]
-  },
-  {
-    title: "Web Development Freelancer",
-    company: "Self-employed",
-    date: "January 2021 - Present",
-    description: [
-      "Designed and developed responsive websites for small businesses",
-      "Implemented e-commerce solutions using platforms like Shopify and WooCommerce",
-      "Provided ongoing maintenance and support for client websites",
-      "Utilized technologies such as HTML, CSS, JavaScript, and various CMS platforms"
-    ]
-  }
-];
-
-const Experience: React.FC<ExperienceProps> = ({ experiences = [], theme }) => {
+const Experience: React.FC<ExperienceProps> = ({ theme }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const experiences = [
+    {
+      title: 'Full Stack Developer Intern',
+      company: 'Tata Advanced Systems',
+      duration: 'June 2023 - Present',
+      description:
+        'Worked on various projects using Mendix, RESTful APIs, and data analysis tools.',
+    },
+    {
+      title: 'Software Engineer',
+      company: 'Tech Solutions',
+      duration: 'Jan 2022 - May 2023',
+      description:
+        'Developed scalable web applications and improved system performance.',
+    },
+    // Add more experiences as needed
+  ];
+
   return (
     <motion.section
       id='experience'
       ref={ref}
-      className={`p-8 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'} transition-colors duration-300 min-h-screen`}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 1 }}
+      className={`flex-grow p-8 ${
+        theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+      } transition-colors duration-300 min-h-screen`}
+      initial='hidden'
+      animate={inView ? 'visible' : 'hidden'}
+      variants={variants}
+      transition={{ duration: 0.5 }}
     >
       <motion.h2
-        className='text-3xl font-bold mb-6 text-center text-blue-600 dark:text-blue-400'
-        initial={{ y: -50 }}
-        animate={inView ? { y: 0 } : { y: -50 }}
-        transition={{ type: 'spring', stiffness: 50 }}
+        className='text-3xl font-bold flex items-center mb-6 text-blue-600 dark:text-blue-400'
+        variants={variants}
       >
-        <Briefcase className='inline-block mr-2' />
+        <Briefcase className='mr-3' />
         Work Experience
       </motion.h2>
-      <div className='max-w-3xl mx-auto'>
-        {experiences.map((experience: ExperienceItem, index: number) => (
-          <ExperienceItem key={index} experience={experience} index={index} />
+      <motion.div
+        className='grid grid-cols-1 md:grid-cols-2 gap-8'
+        variants={variants}
+      >
+        {experiences.map((exp, index) => (
+          <ExperienceCard key={index} {...exp} />
         ))}
-      </div>
+      </motion.div>
     </motion.section>
   );
 };
 
-interface ExperienceItemProps {
-  experience: ExperienceItem;
-  index: number;
+interface ExperienceCardProps {
+  title: string;
+  company: string;
+  duration: string;
+  description: string;
 }
 
-const ExperienceItem: React.FC<ExperienceItemProps> = ({ experience, index }) => {
-  return (
-    <motion.div
-      className='mb-8 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.2 }}
-    >
-      <h3 className='text-xl font-bold mb-2'>{experience.title}</h3>
-      <p className='text-gray-600 dark:text-gray-300 mb-2'>
-        {experience.company} | {experience.date}
-      </p>
-      <ul className='list-disc list-inside text-gray-700 dark:text-gray-200'>
-        {experience.description.map((item: string, i: number) => (
-          <li key={i}>{item}</li>
-        ))}
-      </ul>
-    </motion.div>
-  );
-};
+const ExperienceCard: React.FC<ExperienceCardProps> = ({
+  title,
+  company,
+  duration,
+  description,
+}) => (
+  <motion.div
+    className='bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+  >
+    <h3 className='text-xl font-semibold mb-2'>{title}</h3>
+    <p className='text-sm text-blue-500 mb-1'>{company}</p>
+    <p className='text-sm text-gray-500 dark:text-gray-300 mb-4'>{duration}</p>
+    <p className='text-sm'>{description}</p>
+  </motion.div>
+);
 
 export default Experience;

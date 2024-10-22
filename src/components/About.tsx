@@ -35,12 +35,13 @@ const About = ({ theme }: { theme: string }) => {
         About Me
       </motion.h2>
       <motion.p className='text-lg mb-8 leading-relaxed' variants={variants}>
-        I'm Pavan Awagan, a passionate full-stack developer with a strong
-        foundation in problem-solving and a keen interest in creating innovative
-        web solutions. Currently pursuing my MCA at Lovely Professional
-        University, I bring hands-on experience from my internship at Tata
-        Advanced Systems, where I worked on various projects using Mendix,
-        RESTful APIs, and data analysis tools.
+        I'm <span className='font-bold text-blue-500'>Pavan Awagan</span>, a
+        passionate full-stack developer with a strong foundation in
+        problem-solving and a keen interest in creating innovative web
+        solutions. Currently pursuing my MCA at Lovely Professional University,
+        I bring hands-on experience from my internship at Tata Advanced Systems,
+        where I worked on various projects using Mendix, RESTful APIs, and data
+        analysis tools.
       </motion.p>
       <motion.div
         className='grid grid-cols-1 md:grid-cols-2 gap-8'

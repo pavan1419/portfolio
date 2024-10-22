@@ -6,31 +6,39 @@ import {
   Mail,
   Sun,
   Moon,
-  Menu,
-  X,
-  BookOpen,
-  Coffee,
   Home,
   Code,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
 } from 'lucide-react';
-// Remove the following line:
-// import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-scroll';
 
 interface NavbarProps {
   theme: string;
   toggleTheme: () => void;
+  isExpanded: boolean;
+  toggleExpand: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  theme,
+  toggleTheme,
+  isExpanded,
+  toggleExpand,
+}) => {
   const [activeSection, setActiveSection] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { icon: <Home size={18} />, text: 'Home', sectionId: 'home' },
     { icon: <User size={18} />, text: 'About', sectionId: 'about' },
-    { icon: <BookOpen size={18} />, text: 'Skills', sectionId: 'skills' },
-    { icon: <Briefcase size={18} />, text: 'Projects', sectionId: 'projects' },
-    { icon: <Coffee size={18} />, text: 'Experience', sectionId: 'experience' },
+    {
+      icon: <Briefcase size={18} />,
+      text: 'Experience',
+      sectionId: 'experience',
+    },
+    { icon: <Code size={18} />, text: 'Projects', sectionId: 'projects' },
     { icon: <Mail size={18} />, text: 'Contact', sectionId: 'contact' },
   ];
 
@@ -54,13 +62,30 @@ const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <>
+      {/* Mobile menu button */}
+      <button
+        onClick={toggleMobileMenu}
+        className='fixed top-4 right-4 z-50 p-2 rounded-md bg-gray-200 dark:bg-gray-700 lg:hidden'
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* Navbar */}
       <nav
-        className={`fixed top-0 right-0 h-full w-64 md:w-72 bg-opacity-90 backdrop-blur-md shadow-lg z-40 navbar transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        } md:translate-x-0 transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full ${
+          isExpanded ? 'w-64 md:w-72' : 'w-16'
+        } bg-opacity-90 backdrop-blur-md shadow-lg z-40 navbar transition-all duration-300 ease-in-out ${
           theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'
+        } ${
+          isMobileMenuOpen
+            ? 'translate-x-0'
+            : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div className='flex flex-col h-full p-4'>
@@ -70,18 +95,17 @@ const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
                 key={index}
                 {...item}
                 isActive={activeSection === item.sectionId}
+                isExpanded={isExpanded}
+                onClick={() => setIsMobileMenuOpen(false)}
               />
             ))}
           </div>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <div className='flex flex-col items-center space-y-4 mb-4'>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <ExpandToggle isExpanded={isExpanded} toggleExpand={toggleExpand} />
+          </div>
         </div>
       </nav>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className='fixed top-4 right-4 z-50 md:hidden bg-blue-500 text-white p-2 rounded-full'
-      >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
     </>
   );
 };
@@ -91,6 +115,8 @@ interface NavItemProps {
   text: string;
   sectionId: string;
   isActive: boolean;
+  isExpanded: boolean;
+  onClick: () => void;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
@@ -98,6 +124,8 @@ const NavItem: React.FC<NavItemProps> = ({
   text,
   sectionId,
   isActive,
+  isExpanded,
+  onClick,
 }) => (
   <Link
     to={sectionId}
@@ -108,6 +136,7 @@ const NavItem: React.FC<NavItemProps> = ({
         ? 'bg-blue-500 text-white'
         : 'hover:bg-gray-200 dark:hover:bg-gray-700'
     }`}
+    onClick={onClick}
   >
     <motion.div
       whileHover={{ scale: 1.1 }}
@@ -115,7 +144,7 @@ const NavItem: React.FC<NavItemProps> = ({
       className='flex items-center space-x-2'
     >
       {icon}
-      <span>{text}</span>
+      {isExpanded && <span>{text}</span>}
     </motion.div>
   </Link>
 );
@@ -135,6 +164,25 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, toggleTheme }) => (
     whileTap={{ scale: 0.9 }}
   >
     {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+  </motion.button>
+);
+
+interface ExpandToggleProps {
+  isExpanded: boolean;
+  toggleExpand: () => void;
+}
+
+const ExpandToggle: React.FC<ExpandToggleProps> = ({
+  isExpanded,
+  toggleExpand,
+}) => (
+  <motion.button
+    onClick={toggleExpand}
+    className='p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700'
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+  >
+    {isExpanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
   </motion.button>
 );
 
