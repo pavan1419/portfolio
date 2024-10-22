@@ -10,6 +10,7 @@ import Experience from './components/Experience';
 import Loader from './components/Loader';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -49,6 +50,7 @@ function App() {
 
   return (
     <Router>
+      <Analytics />
       <motion.div
         className='flex'
         initial={{ opacity: 0 }}
