@@ -54,7 +54,17 @@ const Experience = () => {
   );
 };
 
-const ExperienceItem = ({ experience, index }) => {
+interface ExperienceItemProps {
+  experience: {
+    title: string;
+    company: string;
+    period: string;
+    description: string[];
+  };
+  index: number;
+}
+
+const ExperienceItem: React.FC<ExperienceItemProps> = ({ experience, index }) => {
   return (
     <motion.div
       className='mb-8 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'

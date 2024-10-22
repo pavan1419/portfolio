@@ -75,6 +75,15 @@ const projects = [
   },
 ];
 
+interface Project {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  technologies: string[];
+  link: string;
+  github: string;
+}
+
 const Project = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -107,7 +116,7 @@ const Project = () => {
   );
 };
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   return (
     <motion.div
       className='bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2'

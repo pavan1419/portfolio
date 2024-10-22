@@ -58,7 +58,7 @@ function Contact() {
   );
 }
 
-const ContactItem = ({ icon, text, link }) => (
+const ContactItem = ({ icon, text, link }: { icon: React.ReactNode; text: string; link?: string }) => (
   <motion.div
     className='flex items-center space-x-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-md'
     whileHover={{ scale: 1.05 }}

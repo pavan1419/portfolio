@@ -33,7 +33,7 @@ function Footer() {
   );
 }
 
-const SocialLink = ({ href, icon }) => (
+const SocialLink = ({ href, icon }: { href: string; icon: React.ReactNode }) => (
   <a 
     href={href} 
     className="hover:text-blue-400 transition-colors duration-300"
