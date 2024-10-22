@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Code, Wrench } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
