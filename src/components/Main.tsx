@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Code, Mail } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';

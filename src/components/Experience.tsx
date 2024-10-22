@@ -3,25 +3,18 @@ import { motion } from 'framer-motion';
 import { Briefcase } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
-const experiences = [
-  {
-    title: 'Intern (Digitalization/IT BA)',
-    company: 'Tata Advanced Systems',
-    period: 'Dec 2023 – Jun 2024',
-    description: [
-      'Developed a 5S Auditing Application using Mendix',
-      'Created Admin Security Register modules',
-      'Implemented FOD (Foreign Object Detection) application',
-      'Designed the TADL Mendix Dashboard',
-      'Worked with REST APIs, data export/import, SSO, and agile development',
-      'Tested APIs using Postman',
-      'Automated secure FTP server interactions via Bash scripting',
-      'Performed data analysis and visualization using Alteryx, SQL, and Tableau',
-    ],
-  },
-];
+interface ExperienceItem {
+  title: string;
+  company: string;
+  period: string;
+  description: string[];
+}
 
-const Experience = () => {
+interface ExperienceProps {
+  experiences?: ExperienceItem[];
+}
+
+const Experience: React.FC<ExperienceProps> = ({ experiences = [] }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -46,25 +39,15 @@ const Experience = () => {
         Work Experience
       </motion.h2>
       <div className='max-w-3xl mx-auto'>
-        {experiences.map((exp, index) => (
-          <ExperienceItem key={index} experience={exp} index={index} />
+        {experiences.map((experience: ExperienceItem, index: number) => (
+          <ExperienceItem key={index} experience={experience} index={index} />
         ))}
       </div>
     </motion.section>
   );
 };
 
-interface ExperienceItemProps {
-  experience: {
-    title: string;
-    company: string;
-    period: string;
-    description: string[];
-  };
-  index: number;
-}
-
-const ExperienceItem: React.FC<ExperienceItemProps> = ({ experience, index }) => {
+const ExperienceItem: React.FC<{ experience: ExperienceItem; index: number }> = ({ experience, index }) => {
   return (
     <motion.div
       className='mb-8 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
