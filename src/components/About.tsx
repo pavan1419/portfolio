@@ -4,7 +4,7 @@ import { User, Code, Wrench } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { ReactNode } from 'react';
 
-const About = () => {
+const About = ({ theme }: { theme: string }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -19,7 +19,9 @@ const About = () => {
     <motion.section
       id='about'
       ref={ref}
-      className='flex-grow p-8 bg-white dark:bg-gray-800 transition-colors duration-300'
+      className={`flex-grow p-8 ${
+        theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+      } transition-colors duration-300 min-h-screen`}
       initial='hidden'
       animate={inView ? 'visible' : 'hidden'}
       variants={variants}

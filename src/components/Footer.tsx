@@ -2,31 +2,35 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter } from 'lucide-react';
 
-function Footer() {
+interface FooterProps {
+  name: string;
+}
+
+function Footer({ name }: FooterProps) {
   return (
-    <motion.footer 
-      className="p-6 bg-gray-900 text-white"
+    <motion.footer
+      className='p-6 bg-gray-900 text-white'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <motion.p 
+      <div className='container mx-auto flex flex-col md:flex-row justify-between items-center'>
+        <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          &copy; 2023 My Portfolio. All rights reserved.
+          &copy; 2023 {name}. All rights reserved.
         </motion.p>
-        <motion.div 
-          className="flex space-x-4 mt-4 md:mt-0"
+        <motion.div
+          className='flex space-x-4 mt-4 md:mt-0'
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <SocialLink href="#" icon={<Github />} />
-          <SocialLink href="#" icon={<Linkedin />} />
-          <SocialLink href="#" icon={<Twitter />} />
+          <SocialLink href='#' icon={<Github />} />
+          <SocialLink href='#' icon={<Linkedin />} />
+          <SocialLink href='#' icon={<Twitter />} />
         </motion.div>
       </div>
     </motion.footer>

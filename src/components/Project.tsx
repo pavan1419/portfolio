@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Code, Server, Shield } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
@@ -84,17 +84,32 @@ interface Project {
   github: string;
 }
 
-const Project = () => {
+const Project = ({ theme }: { theme: string }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
+  const [filter, setFilter] = useState('all');
+
+  const filteredProjects =
+    filter === 'all'
+      ? projects
+      : projects.filter((project) => project.technologies.includes(filter));
+
+  const uniqueTechnologies = Array.from(
+    new Set(projects.flatMap((p) => p.technologies))
+  );
+
   return (
     <motion.section
       id='projects'
       ref={ref}
-      className='p-8 bg-gray-100 dark:bg-gray-800 transition-colors duration-300'
+      className={`p-8 ${
+        theme === 'dark'
+          ? 'bg-gray-800 text-white'
+          : 'bg-gray-100 text-gray-800'
+      } transition-colors duration-300 min-h-screen`}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 1 }}
@@ -107,8 +122,33 @@ const Project = () => {
       >
         My Projects
       </motion.h2>
+      <div className='mb-8 flex justify-center flex-wrap gap-2'>
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-4 py-2 rounded ${
+            filter === 'all'
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-200 text-gray-800'
+          }`}
+        >
+          All
+        </button>
+        {uniqueTechnologies.map((tech) => (
+          <button
+            key={tech}
+            onClick={() => setFilter(tech)}
+            className={`px-4 py-2 rounded ${
+              filter === tech
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-800'
+            }`}
+          >
+            {tech}
+          </button>
+        ))}
+      </div>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-        {projects.map((project, index) => (
+        {filteredProjects.map((project, index) => (
           <ProjectCard key={index} project={project} index={index} />
         ))}
       </div>
@@ -116,7 +156,13 @@ const Project = () => {
   );
 };
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const ProjectCard = ({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) => {
   return (
     <motion.div
       className='bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2'

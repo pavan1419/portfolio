@@ -12,9 +12,35 @@ interface ExperienceItem {
 
 interface ExperienceProps {
   experiences?: ExperienceItem[];
+  theme?: string;
 }
 
-const Experience: React.FC<ExperienceProps> = ({ experiences = [] }) => {
+const experiences = [
+  {
+    title: "Full Stack Developer Intern",
+    company: "Tata Advanced Systems",
+    date: "June 2022 - August 2022",
+    description: [
+      "Developed and maintained web applications using Mendix low-code platform",
+      "Implemented RESTful APIs for data integration",
+      "Collaborated with cross-functional teams to deliver high-quality software solutions",
+      "Participated in code reviews and contributed to improving development processes"
+    ]
+  },
+  {
+    title: "Web Development Freelancer",
+    company: "Self-employed",
+    date: "January 2021 - Present",
+    description: [
+      "Designed and developed responsive websites for small businesses",
+      "Implemented e-commerce solutions using platforms like Shopify and WooCommerce",
+      "Provided ongoing maintenance and support for client websites",
+      "Utilized technologies such as HTML, CSS, JavaScript, and various CMS platforms"
+    ]
+  }
+];
+
+const Experience: React.FC<ExperienceProps> = ({ experiences = [], theme }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -24,7 +50,7 @@ const Experience: React.FC<ExperienceProps> = ({ experiences = [] }) => {
     <motion.section
       id='experience'
       ref={ref}
-      className='p-8 bg-gray-100 dark:bg-gray-800 transition-colors duration-300'
+      className={`p-8 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'} transition-colors duration-300 min-h-screen`}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 1 }}

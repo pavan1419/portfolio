@@ -4,22 +4,36 @@ import { Code, Mail } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { Link } from 'react-scroll'; // Import Link from react-scroll
 
-const Main = () => {
+interface MainProps {
+  name: string;
+}
+
+const Main: React.FC<MainProps> = ({ name }) => {
   return (
     <motion.main
       id='home'
-      className='flex-grow p-8 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 text-gray-900 dark:text-white'
+      className='relative flex-grow p-8 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 text-gray-900 dark:text-white min-h-screen overflow-hidden'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
+      <motion.div
+        className='absolute inset-0 z-0'
+        animate={{
+          background: [
+            'radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%)',
+            'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
+          ],
+        }}
+        transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
+      />
       <motion.h1
         className='text-5xl font-bold mb-4 text-center'
         initial={{ y: -50 }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 50 }}
       >
-        Welcome to my portfolio!
+        Hi, I'm {name}
       </motion.h1>
       <motion.div
         className='text-3xl mb-6 text-center'

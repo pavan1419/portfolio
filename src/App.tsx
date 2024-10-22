@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Main from './components/Main';
 import Contact from './components/Contact';
@@ -8,11 +8,10 @@ import About from './components/About';
 import Project from './components/Project';
 import Experience from './components/Experience';
 import Loader from './components/Loader';
-import CustomCursor from './components/CustomCursor';
-import './styles/CustomCursor.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState('light');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +19,7 @@ function App() {
     if (savedTheme) {
       setTheme(savedTheme);
     }
-    setTimeout(() => setLoading(false), 2000); // Simulating load time
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   useEffect(() => {
@@ -33,24 +32,30 @@ function App() {
   };
 
   return (
-    <AnimatePresence>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div
-          className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300`}
-        >
-          <CustomCursor />
-          <Navbar theme={theme} toggleTheme={toggleTheme} />
-          <Main />
-          <About />
-          <Experience />
-          <Project />
-          <Contact />
-          <Footer />
-        </div>
-      )}
-    </AnimatePresence>
+    <Router>
+      <AnimatePresence>
+        {loading ? (
+          <Loader />
+        ) : (
+          <motion.div
+            className='flex'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Navbar theme={theme} toggleTheme={toggleTheme} />
+            <main className='flex-grow pr-64 md:pr-72'>
+              <Main name='Pavan Awagan' />
+              <About theme={theme} />
+              <Experience theme={theme} />
+              <Project theme={theme} />
+              <Contact />
+              <Footer name='Pavan Awagan' />
+            </main>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Router>
   );
 }
 

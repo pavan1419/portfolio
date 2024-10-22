@@ -1,7 +1,21 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { User, Briefcase, Mail, Sun, Moon, Menu, X } from 'lucide-react';
-import { useMediaQuery } from 'react-responsive';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import {
+  User,
+  Briefcase,
+  Mail,
+  Sun,
+  Moon,
+  Menu,
+  X,
+  BookOpen,
+  Coffee,
+  Home,
+  Code,
+} from 'lucide-react';
+// Remove the following line:
+// import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-scroll';
 
 interface NavbarProps {
   theme: string;
@@ -9,100 +23,119 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
+  const [activeSection, setActiveSection] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setIsOpen(false);
-  };
+  const navItems = [
+    { icon: <User size={18} />, text: 'About', sectionId: 'about' },
+    { icon: <BookOpen size={18} />, text: 'Skills', sectionId: 'skills' },
+    { icon: <Briefcase size={18} />, text: 'Projects', sectionId: 'projects' },
+    { icon: <Coffee size={18} />, text: 'Experience', sectionId: 'experience' },
+    { icon: <Mail size={18} />, text: 'Contact', sectionId: 'contact' },
+  ];
 
-  const NavItem = ({
-    icon,
-    text,
-    sectionId,
-  }: {
-    icon: React.ReactNode;
-    text: string;
-    sectionId: string;
-  }) => (
-    <motion.li
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className='w-full md:w-auto'
-    >
-      <button
-        onClick={() => scrollToSection(sectionId)}
-        className='flex items-center space-x-2 hover:text-blue-500 transition-colors duration-200 w-full md:w-auto px-4 py-2 rounded-md'
-      >
-        {icon}
-        <span>{text}</span>
-      </button>
-    </motion.li>
-  );
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map((item) => item.sectionId);
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <motion.nav
-      className={`sticky top-0 bg-opacity-80 backdrop-blur-md shadow-lg z-50 ${
-        theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 50 }}
-    >
-      <div className='container mx-auto flex justify-between items-center p-4'>
-        <motion.div
-          className='text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text'
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          MyLogo
-        </motion.div>
-        {isMobile && (
-          <motion.button
-            onClick={() => setIsOpen(!isOpen)}
-            className='p-2'
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isOpen ? <X /> : <Menu />}
-          </motion.button>
-        )}
-        <AnimatePresence>
-          {(!isMobile || isOpen) && (
-            <motion.ul
-              className={`flex ${
-                isMobile
-                  ? 'flex-col absolute top-full left-0 right-0 bg-inherit p-4'
-                  : 'flex-row space-x-4'
-              } items-center`}
-              initial={isMobile ? { opacity: 0, y: -20 } : { opacity: 1 }}
-              animate={isMobile ? { opacity: 1, y: 0 } : {}}
-              exit={isMobile ? { opacity: 0, y: -20 } : {}}
-              transition={{ duration: 0.3 }}
-            >
-              <NavItem icon={<User />} text='About' sectionId='about' />
+    <>
+      <nav
+        className={`fixed top-0 right-0 h-full w-64 md:w-72 bg-opacity-90 backdrop-blur-md shadow-lg z-40 navbar transform ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        } md:translate-x-0 transition-transform duration-300 ease-in-out ${
+          theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'
+        }`}
+      >
+        <div className='flex flex-col h-full p-4'>
+          <div className='flex-grow space-y-6 mt-16'>
+            {navItems.map((item, index) => (
               <NavItem
-                icon={<Briefcase />}
-                text='Projects'
-                sectionId='projects'
+                key={index}
+                {...item}
+                isActive={activeSection === item.sectionId}
               />
-              <NavItem icon={<Mail />} text='Contact' sectionId='contact' />
-              <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <button
-                  onClick={toggleTheme}
-                  className='p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200'
-                >
-                  {theme === 'light' ? <Moon /> : <Sun />}
-                </button>
-              </motion.li>
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+            ))}
+          </div>
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+        </div>
+      </nav>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className='fixed top-4 right-4 z-50 md:hidden bg-blue-500 text-white p-2 rounded-full'
+      >
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+    </>
   );
 };
+
+interface NavItemProps {
+  icon: React.ReactNode;
+  text: string;
+  sectionId: string;
+  isActive: boolean;
+}
+
+const NavItem: React.FC<NavItemProps> = ({
+  icon,
+  text,
+  sectionId,
+  isActive,
+}) => (
+  <Link
+    to={sectionId}
+    smooth={true}
+    duration={500}
+    className={`flex items-center space-x-2 cursor-pointer p-2 rounded-md transition-colors duration-200 ${
+      isActive
+        ? 'bg-blue-500 text-white'
+        : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+    }`}
+  >
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      className='flex items-center space-x-2'
+    >
+      {icon}
+      <span>{text}</span>
+    </motion.div>
+  </Link>
+);
+
+interface ThemeToggleProps {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, toggleTheme }) => (
+  <motion.button
+    onClick={toggleTheme}
+    className={`p-2 rounded-full ${
+      theme === 'light' ? 'bg-gray-200 text-gray-800' : 'bg-gray-700 text-white'
+    }`}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+  >
+    {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+  </motion.button>
+);
 
 export default Navbar;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Linkedin, Github } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
@@ -9,11 +9,23 @@ function Contact() {
     threshold: 0.1,
   });
 
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission (e.g., send email or API call)
+    console.log('Form submitted:', formData);
+  };
+
   return (
     <motion.section
       id='contact'
       ref={ref}
-      className='p-8 bg-white dark:bg-gray-800 transition-colors duration-300'
+      className='p-8 bg-white dark:bg-gray-800 transition-colors duration-300 min-h-screen'
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 1 }}
@@ -32,6 +44,41 @@ function Contact() {
         animate={inView ? { y: 0 } : { y: 50 }}
         transition={{ type: 'spring', stiffness: 50 }}
       >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+            required
+          />
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            value={formData.message}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+            rows={4}
+            required
+          ></textarea>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            Send Message
+          </button>
+        </form>
         <ContactItem
           icon={<Mail />}
           text='Pavan01419@gmail.com'
