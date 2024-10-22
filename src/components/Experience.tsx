@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 interface ExperienceItem {
   title: string;
   company: string;
-  period: string;
+  date: string;
   description: string[];
 }
 
@@ -47,7 +47,12 @@ const Experience: React.FC<ExperienceProps> = ({ experiences = [] }) => {
   );
 };
 
-const ExperienceItem: React.FC<{ experience: ExperienceItem; index: number }> = ({ experience, index }) => {
+interface ExperienceItemProps {
+  experience: ExperienceItem;
+  index: number;
+}
+
+const ExperienceItem: React.FC<ExperienceItemProps> = ({ experience, index }) => {
   return (
     <motion.div
       className='mb-8 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
@@ -57,10 +62,10 @@ const ExperienceItem: React.FC<{ experience: ExperienceItem; index: number }> = 
     >
       <h3 className='text-xl font-bold mb-2'>{experience.title}</h3>
       <p className='text-gray-600 dark:text-gray-300 mb-2'>
-        {experience.company} | {experience.period}
+        {experience.company} | {experience.date}
       </p>
       <ul className='list-disc list-inside text-gray-700 dark:text-gray-200'>
-        {experience.description.map((item, i) => (
+        {experience.description.map((item: string, i: number) => (
           <li key={i}>{item}</li>
         ))}
       </ul>

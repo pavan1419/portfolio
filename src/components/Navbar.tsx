@@ -1,11 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Briefcase, Mail, Sun, Moon, Menu, X } from 'lucide-react';
 import { useMediaQuery } from 'react-responsive';
 
 interface NavbarProps {
-  theme: 'light' | 'dark';
+  theme: string;
   toggleTheme: () => void;
 }
 
@@ -106,30 +105,4 @@ const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
   );
 };
 
-const App = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
-
-  return <Navbar theme={theme} toggleTheme={toggleTheme} />;
-};
-
-export default App;
+export default Navbar;
