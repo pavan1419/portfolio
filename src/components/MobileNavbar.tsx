@@ -37,7 +37,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ theme, toggleTheme }) => {
       }`}
     >
       <div className='flex justify-between items-center p-4'>
-        <div className='text-2xl font-bold'>PA</div>
+        <div className='text-2xl font-bold'>PAVAN AWAGAN</div>
         <button onClick={toggleMenu} className='text-2xl focus:outline-none'>
           {isOpen ? <FaTimes /> : <FaBars />}
         </button>
