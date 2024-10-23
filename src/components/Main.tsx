@@ -1,18 +1,22 @@
-import * as React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Code, Mail } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
-import { Link } from 'react-scroll'; // Import Link from react-scroll
+import { Link as ScrollLink } from 'react-scroll';
+import ScrollIndicator from './ScrollIndicator';
 
 interface MainProps {
   name: string;
+  theme: 'light' | 'dark';
 }
 
-const Main: React.FC<MainProps> = ({ name }) => {
+const Main: React.FC<MainProps> = ({ name, theme }) => {
+  const [hoverButton, setHoverButton] = useState<string | null>(null);
+
   return (
     <motion.main
       id='home'
-      className='relative flex-grow p-8 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 text-gray-900 dark:text-white min-h-screen overflow-hidden'
+      className='relative flex-grow p-4 sm:p-8 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 text-gray-900 dark:text-white min-h-screen overflow-hidden'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -27,19 +31,24 @@ const Main: React.FC<MainProps> = ({ name }) => {
         }}
         transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
       />
+
       <motion.h1
-        className='text-5xl font-bold mb-4 text-center'
-        initial={{ y: -50 }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', stiffness: 50 }}
+        className='text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 text-center'
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 50, delay: 0.2 }}
       >
-        Hi, I'm {name}
+        Hi, I'm{' '}
+        <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500'>
+          {name}
+        </span>
       </motion.h1>
+
       <motion.div
-        className='text-3xl mb-6 text-center'
+        className='text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 text-center'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.7 }}
       >
         <TypeAnimation
           sequence={[
@@ -53,42 +62,71 @@ const Main: React.FC<MainProps> = ({ name }) => {
           wrapper='span'
           speed={50}
           repeat={Infinity}
+          className='font-semibold'
         />
       </motion.div>
+
       <motion.p
-        className='text-xl mb-6 text-center max-w-2xl'
-        initial={{ y: 50 }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', stiffness: 50 }}
+        className='text-lg sm:text-xl mb-8 sm:mb-10 text-center max-w-xs sm:max-w-sm md:max-w-2xl px-4'
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 50, delay: 0.9 }}
       >
-        I'm passionate about creating innovative web solutions that make a
-        difference.
+        Passionate about creating innovative web solutions that make a
+        difference in the digital world.
       </motion.p>
+
       <motion.div
-        className='flex items-center justify-center space-x-4'
-        initial={{ y: 50 }}
-        animate={{ y: 0 }}
-        transition={{ type: 'spring', stiffness: 50, delay: 0.2 }}
+        className='flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6'
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 50, delay: 1.1 }}
       >
-        <Link
-          to='contact'
-          smooth={true}
-          duration={500}
-          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center cursor-pointer'
-        >
-          <Mail className='mr-2' />
-          Contact Me
-        </Link>
-        <Link
-          to='projects'
-          smooth={true}
-          duration={500}
-          className='bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center cursor-pointer'
-        >
-          <Code className='mr-2' />
-          View Projects
-        </Link>
+        {['contact', 'projects'].map((link, index) => (
+          <ScrollLink
+            key={link}
+            to={link}
+            smooth={true}
+            duration={500}
+            onMouseEnter={() => setHoverButton(link)}
+            onMouseLeave={() => setHoverButton(null)}
+            className={`relative w-48 h-14 ${
+              index === 0
+                ? 'bg-blue-500 hover:bg-blue-600'
+                : 'bg-purple-500 hover:bg-purple-600'
+            } text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
+          >
+            <AnimatePresence>
+              {hoverButton === link && (
+                <motion.div
+                  className='absolute inset-0 bg-white opacity-20'
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.2 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+            </AnimatePresence>
+            {index === 0 ? (
+              <Mail className='mr-2' />
+            ) : (
+              <Code className='mr-2' />
+            )}
+            {link.charAt(0).toUpperCase() + link.slice(1)}
+          </ScrollLink>
+        ))}
       </motion.div>
+
+      {/* Scroll down indicator */}
+      <ScrollLink
+        to='about'
+        smooth={true}
+        duration={500}
+        offset={-50}
+        className='absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer'
+      >
+        <ScrollIndicator theme={theme} direction='down' />
+      </ScrollLink>
     </motion.main>
   );
 };

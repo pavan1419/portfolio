@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  AnimatePresence,
+} from 'framer-motion';
 import { User } from 'lucide-react';
 
 interface FloatingUserIconProps {
@@ -8,12 +13,21 @@ interface FloatingUserIconProps {
 
 const FloatingUserIcon: React.FC<FloatingUserIconProps> = ({ onClick }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(true);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const springConfig = { damping: 20, stiffness: 300 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTooltip(false);
+    }, 3000); // Hide tooltip after 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <motion.button
@@ -24,6 +38,8 @@ const FloatingUserIcon: React.FC<FloatingUserIconProps> = ({ onClick }) => {
       onDragStart={() => setIsDragging(true)}
       onDragEnd={() => setIsDragging(false)}
       onClick={() => !isDragging && onClick()}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
       style={{ x: springX, y: springY }}
       className='fixed bottom-4 right-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-full shadow-lg z-50 cursor-move'
     >
@@ -50,6 +66,19 @@ const FloatingUserIcon: React.FC<FloatingUserIconProps> = ({ onClick }) => {
           repeatType: 'reverse',
         }}
       />
+
+      <AnimatePresence>
+        {showTooltip && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className='absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap'
+          >
+            Ping me
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.button>
   );
 };
