@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
+import MobileNavbar from './components/MobileNavbar';
 import Main from './components/Main';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 import About from './components/About';
 import Project from './components/Project';
 import Experience from './components/Experience';
@@ -16,6 +17,7 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [loading, setLoading] = useState(true);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   useEffect(() => {
@@ -35,6 +37,17 @@ function App() {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust breakpoint as needed
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -57,28 +70,34 @@ function App() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Navbar
-          theme={theme}
-          toggleTheme={toggleTheme}
-          isExpanded={isNavExpanded}
-          toggleExpand={toggleNavExpansion}
-        />
-        <main
-          className={`flex-grow transition-all duration-300 ${
-            isLargeScreen && isNavExpanded
-              ? 'ml-64 md:ml-72'
-              : isLargeScreen
-              ? 'ml-16'
-              : 'ml-0'
-          }`}
-        >
-          <Main name='Pavan Awagan' />
-          <About theme={theme} />
-          <Experience theme={theme} />
-          <Project theme={theme} />
-          <Contact />
-          <Footer name='Pavan Awagan' />
-        </main>
+        <div className={`${theme === 'dark' ? 'dark' : ''} flex w-full`}>
+          {isMobile ? (
+            <MobileNavbar theme={theme} toggleTheme={toggleTheme} />
+          ) : (
+            <Navbar
+              theme={theme}
+              toggleTheme={toggleTheme}
+              isExpanded={isNavExpanded}
+              toggleExpand={toggleNavExpansion}
+            />
+          )}
+          <main
+            className={`flex-grow transition-all duration-300 ${
+              isLargeScreen && isNavExpanded
+                ? 'ml-64'
+                : isLargeScreen
+                ? 'ml-16'
+                : 'ml-0'
+            }`}
+          >
+            <Main name='Pavan Awagan' />
+            <About theme={theme} />
+            <Experience theme={theme} />
+            <Project theme={theme} />
+            <Contact />
+            {/* <Footer name='Pavan Awagan' /> */}
+          </main>
+        </div>
       </motion.div>
     </Router>
   );

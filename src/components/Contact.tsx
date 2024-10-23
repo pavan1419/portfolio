@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Linkedin, Github } from 'lucide-react';
+import { Mail, Github, Linkedin, Twitter } from 'lucide-react';
+import { SiMedium } from 'react-icons/si';
 import { useInView } from 'react-intersection-observer';
 
 const Contact: FC = () => {
@@ -9,50 +10,71 @@ const Contact: FC = () => {
     threshold: 0.1,
   });
 
+  const contactLinks = [
+    { name: 'EMAIL', icon: <Mail />, url: 'mailto:Pavan01419@gmail.com' },
+    {
+      name: 'GITHUB',
+      icon: <Github />,
+      url: 'https://github.com/yourusername',
+    },
+    {
+      name: 'LINKEDIN',
+      icon: <Linkedin />,
+      url: 'https://www.linkedin.com/in/yourprofile',
+    },
+    {
+      name: 'MEDIUM',
+      icon: <SiMedium />,
+      url: 'https://medium.com/@yourusername',
+    },
+    {
+      name: 'TWITTER',
+      icon: <Twitter />,
+      url: 'https://twitter.com/yourusername',
+    },
+  ];
+
   return (
     <motion.section
       id='contact'
       ref={ref}
-      className='p-8 bg-white dark:bg-gray-800 transition-colors duration-300 min-h-screen'
+      className='p-8 bg-white dark:bg-gray-900 transition-colors duration-300 min-h-screen flex flex-col justify-center'
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 1 }}
     >
       <motion.h2
-        className='text-3xl font-bold mb-6 text-center text-blue-600 dark:text-blue-400'
+        className='text-5xl font-bold mb-12 text-blue-600 dark:text-blue-400'
         initial={{ y: -50 }}
         animate={inView ? { y: 0 } : { y: -50 }}
         transition={{ type: 'spring', stiffness: 50 }}
       >
-        Contact Me
+        CONTACT
       </motion.h2>
       <motion.div
-        className='max-w-2xl mx-auto space-y-6'
+        className='flex flex-col md:flex-row justify-between items-start md:items-center max-w-4xl mx-auto w-full'
         initial={{ y: 50 }}
         animate={inView ? { y: 0 } : { y: 50 }}
         transition={{ type: 'spring', stiffness: 50 }}
       >
-        <ContactItem
-          icon={<Mail />}
-          text='Pavan01419@gmail.com'
-          link='mailto:Pavan01419@gmail.com'
-        />
-        <ContactItem
-          icon={<Phone />}
-          text='8830165110'
-          link='tel:+918830165110'
-        />
-        <ContactItem icon={<MapPin />} text='Pune, Maharashtra, India' />
-        <ContactItem
-          icon={<Linkedin />}
-          text='LinkedIn'
-          link='https://www.linkedin.com/in/yourprofile'
-        />
-        <ContactItem
-          icon={<Github />}
-          text='GitHub'
-          link='https://github.com/yourusername'
-        />
+        <div className='mb-8 md:mb-0'>
+          <h3 className='text-3xl mb-4 text-gray-700 dark:text-gray-300'>
+            Let's Connect
+          </h3>
+          <p className='text-2xl font-light text-gray-600 dark:text-gray-400'>
+            DIGITALLY
+          </p>
+        </div>
+        <div className='flex flex-col space-y-4'>
+          {contactLinks.map((link) => (
+            <ContactItem
+              key={link.name}
+              icon={link.icon}
+              text={link.name}
+              link={link.url}
+            />
+          ))}
+        </div>
       </motion.div>
     </motion.section>
   );
@@ -65,27 +87,19 @@ const ContactItem = ({
 }: {
   icon: React.ReactNode;
   text: string;
-  link?: string;
+  link: string;
 }) => (
-  <motion.div
-    className='flex items-center space-x-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-md'
-    whileHover={{ scale: 1.05 }}
+  <motion.a
+    href={link}
+    target='_blank'
+    rel='noopener noreferrer'
+    className='flex items-center space-x-4 text-xl text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300'
+    whileHover={{ x: 10 }}
     whileTap={{ scale: 0.95 }}
   >
-    <div className='text-blue-500'>{icon}</div>
-    {link ? (
-      <a
-        href={link}
-        target='_blank'
-        rel='noopener noreferrer'
-        className='hover:text-blue-500 transition-colors duration-300'
-      >
-        {text}
-      </a>
-    ) : (
-      <span>{text}</span>
-    )}
-  </motion.div>
+    <div className='text-blue-500 dark:text-blue-400'>{icon}</div>
+    <span>{text}</span>
+  </motion.a>
 );
 
 export default Contact;

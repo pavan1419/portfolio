@@ -20,7 +20,7 @@ const Footer: FC<FooterProps> = ({ name }) => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          &copy; 2023 {name}. All rights reserved.
+          &copy; 2024 {name}. All rights reserved.
         </motion.p>
         <motion.div
           className='flex space-x-4 mt-4 md:mt-0'

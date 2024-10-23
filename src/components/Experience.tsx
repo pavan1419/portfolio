@@ -9,35 +9,61 @@ interface ExperienceProps {
 // Move experience data inside the component file
 const experienceData = [
   {
-    title: 'Full Stack Developer',
-    company: 'Freelancer',
-    duration: '2023 - Present',
+    title: 'Intern (Process of Digitalization/ IT Business Application)',
+    company: 'Tata Advanced Systems',
+    duration: 'Dec 2023 – Jun 2024',
     description: [
-      'Developed and maintained multiple client websites using React and Node.js',
-      'Implemented responsive designs and improved application performance',
-      'Worked directly with clients to gather requirements and deliver solutions',
+      'Developed multiple Mendix applications for various business needs',
+      'Implemented REST APIs and integrated with external systems',
+      'Designed user interfaces and improved user experience',
+      'Worked with data analysis and visualization tools',
+    ],
+    projects: [
+      {
+        name: '5S Auditing Application',
+        details: [
+          'Implemented user roles (Admin, Auditor, Auditee)',
+          'Created module-specific audits',
+          'Generated visual reports with audit scores and photo evidence',
+          'Enabled data export to Excel for further analysis',
+        ],
+      },
+      {
+        name: 'Admin Security Register',
+        details: [
+          'Developed modules for Drinking Water, Vehicle, and Lost & Found registers',
+          'Integrated plant-based data management feature',
+          'Resolved bugs and optimized application performance',
+          'Designed the entire user interface for the project',
+        ],
+      },
+      {
+        name: 'FOD (Foreign Object Detection)',
+        details: [
+          'Implemented plant-based data view and storage',
+          'Created robust date range filters and specific data search functionality',
+          'Identified and resolved various bugs within the application',
+        ],
+      },
+      {
+        name: 'TADL MENDIX DASHBOARD',
+        details: [
+          'Designed a comprehensive Mendix dashboard with full UI design',
+          'Ensured seamless integration and user-friendly design',
+        ],
+      },
     ],
     technologies: [
-      'React',
-      'Node.js',
-      'TypeScript',
-      'MongoDB',
-      'Express',
-      'Tailwind CSS',
+      'Mendix',
+      'Postman',
+      'Python',
+      'Bash',
+      'Alteryx',
+      'SQL',
+      'Tableau',
+      'RPA',
     ],
-    link: 'https://yourportfolio.com',
-  },
-  {
-    title: 'Web Developer Intern',
-    company: 'Tech Solutions Inc.',
-    duration: '2022 - 2023',
-    description: [
-      'Assisted in developing web applications using modern technologies',
-      'Collaborated with senior developers on various projects',
-      'Learned and implemented best practices in web development',
-    ],
-    technologies: ['JavaScript', 'HTML', 'CSS', 'React', 'Git'],
-    link: 'https://techsolutions.com',
+    link: 'https://www.tataadvancedsystems.com/',
   },
 ];
 
@@ -96,7 +122,7 @@ const Experience: FC<ExperienceProps> = ({ theme }) => {
                 </span>
               </div>
 
-              <div className='space-y-2'>
+              <div className='space-y-2 mb-4'>
                 {exp.description.map((desc, i) => (
                   <p
                     key={i}
@@ -109,10 +135,40 @@ const Experience: FC<ExperienceProps> = ({ theme }) => {
                 ))}
               </div>
 
+              <div className='space-y-4 mb-4'>
+                {exp.projects.map((project, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ duration: 0.3, delay: i * 0.1 }}
+                  >
+                    <h4 className='text-lg font-semibold mb-2'>
+                      {project.name}
+                    </h4>
+                    <ul className='list-disc list-inside space-y-1'>
+                      {project.details.map((detail, j) => (
+                        <li
+                          key={j}
+                          className={`text-sm ${
+                            theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                          }`}
+                        >
+                          {detail}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+
               <div className='mt-4 flex flex-wrap gap-2'>
                 {exp.technologies.map((tech, i) => (
-                  <span
+                  <motion.span
                     key={i}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.2, delay: i * 0.05 }}
                     className={`px-3 py-1 text-sm rounded-full ${
                       theme === 'dark'
                         ? 'bg-gray-600 text-gray-200'
@@ -120,7 +176,7 @@ const Experience: FC<ExperienceProps> = ({ theme }) => {
                     }`}
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </motion.div>

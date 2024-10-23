@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Code, Wrench } from 'lucide-react';
+import { Code, Wrench, Palette, Brain, Globe } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { ReactNode } from 'react';
 
@@ -14,6 +14,27 @@ const About = ({ theme }: { theme: string }) => {
     visible: { opacity: 1, y: 0 },
   };
 
+  const skills = [
+    {
+      icon: <Palette size={24} />,
+      title: 'Web Design',
+      description:
+        'Transforming ideas into visually stunning and intuitive interfaces is my passion. I blend creativity with user-centric design principles.',
+    },
+    {
+      icon: <Globe size={24} />,
+      title: 'Web Development',
+      description:
+        'As a Full Stack Developer specializing in MERN, I craft robust and scalable web applications from concept to deployment.',
+    },
+    {
+      icon: <Brain size={24} />,
+      title: 'Problem Solving',
+      description:
+        "I thrive on tackling complex challenges, whether they're coding puzzles or real-world issues, always seeking innovative solutions.",
+    },
+  ];
+
   return (
     <motion.section
       id='about'
@@ -27,26 +48,30 @@ const About = ({ theme }: { theme: string }) => {
       transition={{ duration: 0.5 }}
     >
       <motion.h2
-        className='text-3xl font-bold flex items-center mb-6 text-blue-600 dark:text-blue-400'
+        className='text-5xl font-bold mb-12 text-blue-600 dark:text-blue-400'
         variants={variants}
       >
-        <User className='mr-3' />
-        About Me
+        SKILLS
       </motion.h2>
-      <motion.p className='text-lg mb-8 leading-relaxed' variants={variants}>
-        I'm <span className='font-bold text-blue-500'>Pavan Awagan</span>, a
-        passionate full-stack developer with a strong foundation in
-        problem-solving and a keen interest in creating innovative web
-        solutions. Currently pursuing my MCA at Lovely Professional University,
-        I bring hands-on experience from my internship at Tata Advanced Systems,
-        where I worked on various projects using Mendix, RESTful APIs, and data
-        analysis tools.
-      </motion.p>
+      <motion.div
+        className='grid grid-cols-1 md:grid-cols-3 gap-8'
+        variants={variants}
+      >
+        {skills.map((skill, index) => (
+          <SkillCard key={index} {...skill} />
+        ))}
+      </motion.div>
+      <motion.h3
+        className='text-3xl font-bold mt-16 mb-8 text-gray-700 dark:text-gray-300'
+        variants={variants}
+      >
+        TECH I'M FAMILIAR WITH
+      </motion.h3>
       <motion.div
         className='grid grid-cols-1 md:grid-cols-2 gap-8'
         variants={variants}
       >
-        <SkillCard
+        <TechCard
           icon={<Code size={24} />}
           title='Tech Arsenal'
           skills={[
@@ -62,7 +87,7 @@ const About = ({ theme }: { theme: string }) => {
             'Shell Scripting',
           ]}
         />
-        <SkillCard
+        <TechCard
           icon={<Wrench size={24} />}
           title='Toolbox'
           skills={[
@@ -88,10 +113,32 @@ const About = ({ theme }: { theme: string }) => {
 interface SkillCardProps {
   icon: ReactNode;
   title: string;
+  description: string;
+}
+
+const SkillCard = ({ icon, title, description }: SkillCardProps) => (
+  <motion.div
+    className='bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+  >
+    <div className='flex items-center mb-4'>
+      <div className='text-blue-500 mr-3'>{icon}</div>
+      <h3 className='text-xl font-semibold text-blue-600 dark:text-blue-400'>
+        {title}
+      </h3>
+    </div>
+    <p className='text-gray-600 dark:text-gray-300'>{description}</p>
+  </motion.div>
+);
+
+interface TechCardProps {
+  icon: ReactNode;
+  title: string;
   skills: string[];
 }
 
-const SkillCard = ({ icon, title, skills }: SkillCardProps) => (
+const TechCard = ({ icon, title, skills }: TechCardProps) => (
   <motion.div
     className='bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
     whileHover={{ scale: 1.02 }}
