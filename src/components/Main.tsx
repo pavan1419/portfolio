@@ -12,7 +12,7 @@ interface MainProps {
 
 const Main: React.FC<MainProps> = ({ name, theme }) => {
   const [hoverButton, setHoverButton] = useState<string | null>(null);
-  const resumeUrl = '/assets/Pavan_Awagan_resume.pdf';
+  const resumeUrl = '/assets/resume.pdf'; // Define resumeUrl inside the component
 
   return (
     <motion.main
