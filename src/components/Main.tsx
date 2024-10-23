@@ -14,6 +14,19 @@ const Main: React.FC<MainProps> = ({ name, theme }) => {
   const [hoverButton, setHoverButton] = useState<string | null>(null);
   const resumeUrl = '/assets/resume.pdf'; // Define resumeUrl inside the component
 
+  const getButtonClass = (color: string) => {
+    switch (color) {
+      case 'blue':
+        return 'bg-blue-500 hover:bg-blue-600';
+      case 'purple':
+        return 'bg-purple-500 hover:bg-purple-600';
+      case 'green':
+        return 'bg-green-500 hover:bg-green-600';
+      default:
+        return 'bg-gray-500 hover:bg-gray-600';
+    }
+  };
+
   return (
     <motion.main
       id='home'
@@ -98,10 +111,12 @@ const Main: React.FC<MainProps> = ({ name, theme }) => {
             <a
               key={link.name}
               href={link.url}
-              download='Pavan_Awagan_resume.pdf'
+              download='resume.pdf'
               onMouseEnter={() => setHoverButton(link.name)}
               onMouseLeave={() => setHoverButton(null)}
-              className={`relative w-48 h-14 bg-${link.color}-500 hover:bg-${link.color}-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
+              className={`relative w-48 h-14 ${getButtonClass(
+                link.color
+              )} text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
             >
               <AnimatePresence>
                 {hoverButton === link.name && (
@@ -125,7 +140,9 @@ const Main: React.FC<MainProps> = ({ name, theme }) => {
               duration={500}
               onMouseEnter={() => setHoverButton(link.name)}
               onMouseLeave={() => setHoverButton(null)}
-              className={`relative w-48 h-14 bg-${link.color}-500 hover:bg-${link.color}-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
+              className={`relative w-48 h-14 ${getButtonClass(
+                link.color
+              )} text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
             >
               <AnimatePresence>
                 {hoverButton === link.name && (
