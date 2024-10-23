@@ -87,7 +87,7 @@ function App() {
                 />
               )}
             </AnimatePresence>
-            <Main name='Pavan Awagan' />
+            <Main name='Pavan Awagan' theme={theme} />
             <About theme={theme} />
             <Experience theme={theme} />
             <Project theme={theme} />
