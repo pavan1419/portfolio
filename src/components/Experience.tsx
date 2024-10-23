@@ -1,5 +1,7 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Briefcase } from 'lucide-react';
 
 // Define the ExperienceProps interface
 interface ExperienceProps {
@@ -68,122 +70,114 @@ const experienceData = [
 ];
 
 const Experience: FC<ExperienceProps> = ({ theme }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section
+    <motion.section
       id='experience'
-      className={`py-12 md:py-16 min-h-screen ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-      }`}
+      ref={ref}
+      className={`flex-grow p-8 ${
+        theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+      } transition-colors duration-300 min-h-screen`}
+      initial='hidden'
+      animate={inView ? 'visible' : 'hidden'}
+      variants={variants}
+      transition={{ duration: 0.5 }}
     >
-      <div className='container mx-auto px-4'>
-        <h2
-          className={`text-3xl font-bold mb-8 ${
-            theme === 'dark' ? 'text-white' : 'text-gray-800'
-          }`}
-        >
-          Professional Experience
-        </h2>
+      <motion.h2
+        className='text-5xl font-bold mb-12 text-blue-600 dark:text-blue-400'
+        variants={variants}
+      >
+        Professional Experience
+      </motion.h2>
+      <motion.div className='space-y-8' variants={variants}>
+        {experienceData.map((exp, index) => (
+          <ExperienceCard key={index} experience={exp} theme={theme} />
+        ))}
+      </motion.div>
+    </motion.section>
+  );
+};
 
-        <div className='space-y-8'>
-          {experienceData.map((exp, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`p-6 rounded-lg ${
-                theme === 'dark'
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-white text-gray-800'
-              } shadow-lg`}
-            >
-              <div className='flex flex-col md:flex-row md:justify-between md:items-start mb-4'>
-                <div>
-                  <h3 className='text-xl font-semibold'>{exp.title}</h3>
-                  <a
-                    href={exp.link}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className={`text-blue-500 hover:text-blue-600 ${
-                      theme === 'dark'
-                        ? 'text-blue-400 hover:text-blue-300'
-                        : ''
-                    }`}
-                  >
-                    {exp.company}
-                  </a>
-                </div>
-                <span
-                  className={`text-sm ${
-                    theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
-                  } mt-2 md:mt-0`}
-                >
-                  {exp.duration}
-                </span>
-              </div>
+const ExperienceCard: FC<{ experience: any; theme: string }> = ({
+  experience,
+  theme,
+}) => {
+  const isDark = theme === 'dark';
 
-              <div className='space-y-2 mb-4'>
-                {exp.description.map((desc, i) => (
-                  <p
-                    key={i}
-                    className={`text-sm ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}
-                  >
-                    {desc}
-                  </p>
-                ))}
-              </div>
-
-              <div className='space-y-4 mb-4'>
-                {exp.projects.map((project, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    transition={{ duration: 0.3, delay: i * 0.1 }}
-                  >
-                    <h4 className='text-lg font-semibold mb-2'>
-                      {project.name}
-                    </h4>
-                    <ul className='list-disc list-inside space-y-1'>
-                      {project.details.map((detail, j) => (
-                        <li
-                          key={j}
-                          className={`text-sm ${
-                            theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                          }`}
-                        >
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className='mt-4 flex flex-wrap gap-2'>
-                {exp.technologies.map((tech, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.2, delay: i * 0.05 }}
-                    className={`px-3 py-1 text-sm rounded-full ${
-                      theme === 'dark'
-                        ? 'bg-gray-600 text-gray-200'
-                        : 'bg-gray-200 text-gray-700'
-                    }`}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+  return (
+    <motion.div
+      className='bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className='flex items-center mb-4'>
+        <Briefcase className={`w-6 h-6 text-blue-500 mr-3`} />
+        <h3 className='text-xl font-semibold text-blue-600 dark:text-blue-400'>
+          {experience.title}
+        </h3>
       </div>
-    </section>
+      <p
+        className={`mb-2 text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+      >
+        <a
+          href={experience.link}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='text-blue-500 hover:underline'
+        >
+          {experience.company}
+        </a>{' '}
+        | {experience.duration}
+      </p>
+      <ul
+        className={`mb-4 text-sm ${
+          isDark ? 'text-gray-300' : 'text-gray-600'
+        } list-disc list-inside`}
+      >
+        {experience.description.map((desc: string, i: number) => (
+          <li key={i}>{desc}</li>
+        ))}
+      </ul>
+      <div className='mb-4'>
+        {experience.projects.map((project: any, i: number) => (
+          <div key={i} className='mb-3'>
+            <h4 className='font-semibold text-blue-600 dark:text-blue-400'>
+              {project.name}
+            </h4>
+            <ul
+              className={`text-sm ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              } list-disc list-inside pl-4`}
+            >
+              {project.details.map((detail: string, j: number) => (
+                <li key={j}>{detail}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className='flex flex-wrap gap-2'>
+        {experience.technologies.map((tech: string, i: number) => (
+          <span
+            key={i}
+            className={`text-xs font-medium px-3 py-1 rounded-full ${
+              isDark ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-800'
+            }`}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </motion.div>
   );
 };
 
