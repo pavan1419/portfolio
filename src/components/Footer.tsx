@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter } from 'lucide-react';
 
@@ -6,7 +6,7 @@ interface FooterProps {
   name: string;
 }
 
-function Footer({ name }: FooterProps) {
+const Footer: FC<FooterProps> = ({ name }) => {
   return (
     <motion.footer
       className='p-6 bg-gray-900 text-white'
@@ -35,7 +35,7 @@ function Footer({ name }: FooterProps) {
       </div>
     </motion.footer>
   );
-}
+};
 
 const SocialLink = ({ href, icon }: { href: string; icon: React.ReactNode }) => (
   <a 

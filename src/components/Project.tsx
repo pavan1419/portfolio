@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Code, Server, Shield } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
@@ -84,7 +84,11 @@ interface Project {
   github: string;
 }
 
-const Project = ({ theme }: { theme: string }) => {
+interface ProjectProps {
+  theme: 'light' | 'dark';
+}
+
+const Project: FC<ProjectProps> = ({ theme }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,

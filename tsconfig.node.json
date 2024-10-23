@@ -1,25 +1,10 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2020"],
-    "module": "ESNext",
-    "skipLibCheck": true,
     "composite": true,
-    "noEmit": false,
-
-    /* Bundler mode */
+    "skipLibCheck": true,
+    "module": "ESNext",
     "moduleResolution": "node",
-    "isolatedModules": true,
-    "moduleDetection": "force",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "allowSyntheticDefaultImports": true
   },
-  "references": [
-    // Remove any reference to tsconfig.app.json if it creates a cycle
-  ]
+  "include": ["vite.config.ts"]
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import {
   User,
@@ -15,7 +15,7 @@ import {
 import { Link } from 'react-scroll';
 
 interface NavbarProps {
-  theme: string;
+  theme: 'light' | 'dark';
   toggleTheme: () => void;
   isExpanded: boolean;
   toggleExpand: () => void;
@@ -111,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = ({
 };
 
 interface NavItemProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   text: string;
   sectionId: string;
   isActive: boolean;
@@ -150,7 +150,7 @@ const NavItem: React.FC<NavItemProps> = ({
 );
 
 interface ThemeToggleProps {
-  theme: string;
+  theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
 

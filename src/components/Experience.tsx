@@ -1,95 +1,134 @@
-import React from 'react';
+import type { FC } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase } from 'lucide-react';
-import { useInView } from 'react-intersection-observer';
 
+// Define the ExperienceProps interface
 interface ExperienceProps {
-  theme: string;
+  theme: 'light' | 'dark';
 }
 
-const Experience: React.FC<ExperienceProps> = ({ theme }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+// Move experience data inside the component file
+const experienceData = [
+  {
+    title: 'Full Stack Developer',
+    company: 'Freelancer',
+    duration: '2023 - Present',
+    description: [
+      'Developed and maintained multiple client websites using React and Node.js',
+      'Implemented responsive designs and improved application performance',
+      'Worked directly with clients to gather requirements and deliver solutions',
+    ],
+    technologies: [
+      'React',
+      'Node.js',
+      'TypeScript',
+      'MongoDB',
+      'Express',
+      'Tailwind CSS',
+    ],
+    link: 'https://yourportfolio.com',
+  },
+  {
+    title: 'Web Developer Intern',
+    company: 'Tech Solutions Inc.',
+    duration: '2022 - 2023',
+    description: [
+      'Assisted in developing web applications using modern technologies',
+      'Collaborated with senior developers on various projects',
+      'Learned and implemented best practices in web development',
+    ],
+    technologies: ['JavaScript', 'HTML', 'CSS', 'React', 'Git'],
+    link: 'https://techsolutions.com',
+  },
+];
 
-  const variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
-
-  const experiences = [
-    {
-      title: 'Full Stack Developer Intern',
-      company: 'Tata Advanced Systems',
-      duration: 'June 2023 - Present',
-      description:
-        'Worked on various projects using Mendix, RESTful APIs, and data analysis tools.',
-    },
-    {
-      title: 'Software Engineer',
-      company: 'Tech Solutions',
-      duration: 'Jan 2022 - May 2023',
-      description:
-        'Developed scalable web applications and improved system performance.',
-    },
-    // Add more experiences as needed
-  ];
-
+const Experience: FC<ExperienceProps> = ({ theme }) => {
   return (
-    <motion.section
+    <section
       id='experience'
-      ref={ref}
-      className={`flex-grow p-8 ${
-        theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
-      } transition-colors duration-300 min-h-screen`}
-      initial='hidden'
-      animate={inView ? 'visible' : 'hidden'}
-      variants={variants}
-      transition={{ duration: 0.5 }}
+      className={`py-12 md:py-16 min-h-screen ${
+        theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+      }`}
     >
-      <motion.h2
-        className='text-3xl font-bold flex items-center mb-6 text-blue-600 dark:text-blue-400'
-        variants={variants}
-      >
-        <Briefcase className='mr-3' />
-        Work Experience
-      </motion.h2>
-      <motion.div
-        className='grid grid-cols-1 md:grid-cols-2 gap-8'
-        variants={variants}
-      >
-        {experiences.map((exp, index) => (
-          <ExperienceCard key={index} {...exp} />
-        ))}
-      </motion.div>
-    </motion.section>
+      <div className='container mx-auto px-4'>
+        <h2
+          className={`text-3xl font-bold mb-8 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-800'
+          }`}
+        >
+          Professional Experience
+        </h2>
+
+        <div className='space-y-8'>
+          {experienceData.map((exp, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`p-6 rounded-lg ${
+                theme === 'dark'
+                  ? 'bg-gray-700 text-white'
+                  : 'bg-white text-gray-800'
+              } shadow-lg`}
+            >
+              <div className='flex flex-col md:flex-row md:justify-between md:items-start mb-4'>
+                <div>
+                  <h3 className='text-xl font-semibold'>{exp.title}</h3>
+                  <a
+                    href={exp.link}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={`text-blue-500 hover:text-blue-600 ${
+                      theme === 'dark'
+                        ? 'text-blue-400 hover:text-blue-300'
+                        : ''
+                    }`}
+                  >
+                    {exp.company}
+                  </a>
+                </div>
+                <span
+                  className={`text-sm ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+                  } mt-2 md:mt-0`}
+                >
+                  {exp.duration}
+                </span>
+              </div>
+
+              <div className='space-y-2'>
+                {exp.description.map((desc, i) => (
+                  <p
+                    key={i}
+                    className={`text-sm ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}
+                  >
+                    {desc}
+                  </p>
+                ))}
+              </div>
+
+              <div className='mt-4 flex flex-wrap gap-2'>
+                {exp.technologies.map((tech, i) => (
+                  <span
+                    key={i}
+                    className={`px-3 py-1 text-sm rounded-full ${
+                      theme === 'dark'
+                        ? 'bg-gray-600 text-gray-200'
+                        : 'bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
-
-interface ExperienceCardProps {
-  title: string;
-  company: string;
-  duration: string;
-  description: string;
-}
-
-const ExperienceCard: React.FC<ExperienceCardProps> = ({
-  title,
-  company,
-  duration,
-  description,
-}) => (
-  <motion.div
-    className='bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg'
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-  >
-    <h3 className='text-xl font-semibold mb-2'>{title}</h3>
-    <p className='text-sm text-blue-500 mb-1'>{company}</p>
-    <p className='text-sm text-gray-500 dark:text-gray-300 mb-4'>{duration}</p>
-    <p className='text-sm'>{description}</p>
-  </motion.div>
-);
 
 export default Experience;

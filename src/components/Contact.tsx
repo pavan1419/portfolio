@@ -1,9 +1,9 @@
-import React from 'react';
+import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Linkedin, Github } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
-function Contact() {
+const Contact: FC = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -56,7 +56,7 @@ function Contact() {
       </motion.div>
     </motion.section>
   );
-}
+};
 
 const ContactItem = ({
   icon,
