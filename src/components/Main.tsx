@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Mail } from 'lucide-react';
+import { Code, Mail, FileText } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
 import { Link as ScrollLink } from 'react-scroll';
 import ScrollIndicator from './ScrollIndicator';
@@ -12,6 +12,7 @@ interface MainProps {
 
 const Main: React.FC<MainProps> = ({ name, theme }) => {
   const [hoverButton, setHoverButton] = useState<string | null>(null);
+  const resumeUrl = '/assets/Pavan_Awagan_resume.pdf';
 
   return (
     <motion.main
@@ -82,39 +83,66 @@ const Main: React.FC<MainProps> = ({ name, theme }) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 50, delay: 1.1 }}
       >
-        {['contact', 'projects'].map((link, index) => (
-          <ScrollLink
-            key={link}
-            to={link}
-            smooth={true}
-            duration={500}
-            onMouseEnter={() => setHoverButton(link)}
-            onMouseLeave={() => setHoverButton(null)}
-            className={`relative w-48 h-14 ${
-              index === 0
-                ? 'bg-blue-500 hover:bg-blue-600'
-                : 'bg-purple-500 hover:bg-purple-600'
-            } text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
-          >
-            <AnimatePresence>
-              {hoverButton === link && (
-                <motion.div
-                  className='absolute inset-0 bg-white opacity-20'
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 0.2 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-            </AnimatePresence>
-            {index === 0 ? (
-              <Mail className='mr-2' />
-            ) : (
-              <Code className='mr-2' />
-            )}
-            {link.charAt(0).toUpperCase() + link.slice(1)}
-          </ScrollLink>
-        ))}
+        {[
+          { name: 'contact', icon: Mail, color: 'blue' },
+          { name: 'projects', icon: Code, color: 'purple' },
+          {
+            name: 'resume',
+            icon: FileText,
+            color: 'green',
+            external: true,
+            url: resumeUrl,
+          },
+        ].map((link) =>
+          link.external ? (
+            <a
+              key={link.name}
+              href={link.url}
+              download='Pavan_Awagan_resume.pdf'
+              onMouseEnter={() => setHoverButton(link.name)}
+              onMouseLeave={() => setHoverButton(null)}
+              className={`relative w-48 h-14 bg-${link.color}-500 hover:bg-${link.color}-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
+            >
+              <AnimatePresence>
+                {hoverButton === link.name && (
+                  <motion.div
+                    className='absolute inset-0 bg-white opacity-20'
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.2 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+              </AnimatePresence>
+              <link.icon className='mr-2' />
+              {link.name.charAt(0).toUpperCase() + link.name.slice(1)}
+            </a>
+          ) : (
+            <ScrollLink
+              key={link.name}
+              to={link.name}
+              smooth={true}
+              duration={500}
+              onMouseEnter={() => setHoverButton(link.name)}
+              onMouseLeave={() => setHoverButton(null)}
+              className={`relative w-48 h-14 bg-${link.color}-500 hover:bg-${link.color}-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center cursor-pointer overflow-hidden`}
+            >
+              <AnimatePresence>
+                {hoverButton === link.name && (
+                  <motion.div
+                    className='absolute inset-0 bg-white opacity-20'
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.2 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+              </AnimatePresence>
+              <link.icon className='mr-2' />
+              {link.name.charAt(0).toUpperCase() + link.name.slice(1)}
+            </ScrollLink>
+          )
+        )}
       </motion.div>
 
       {/* Scroll down indicator */}
