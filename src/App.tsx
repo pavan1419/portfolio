@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -14,6 +14,7 @@ import Experience from './components/Experience';
 import Loader from './components/Loader';
 import UserCard from './components/UserCard';
 import FloatingUserIcon from './components/FloatingUserIcon';
+import NotFound from './components/NotFound';
 
 function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -79,19 +80,29 @@ function App() {
             <AnimatePresence>
               {showUserCard && (
                 <UserCard
-                  name='pavan'
+                  name='PAVAN'
                   status='CREATIVE CODER'
-                  role='Frontend Enthusiast'
+                  role='FullStack Enthusiast'
                   onClose={() => setShowUserCard(false)}
                   theme={theme}
                 />
               )}
             </AnimatePresence>
-            <Main name='Pavan Awagan' theme={theme} />
-            <About theme={theme} />
-            <Experience theme={theme} />
-            <Project theme={theme} />
-            <Contact theme={theme} />
+            <Routes>
+              <Route
+                path='/'
+                element={
+                  <>
+                    <Main name='Pavan Awagan' theme={theme} />
+                    <About theme={theme} />
+                    <Experience theme={theme} />
+                    <Project theme={theme} />
+                    <Contact theme={theme} />
+                  </>
+                }
+              />
+              <Route path='*' element={<NotFound theme={theme} />} />
+            </Routes>
           </main>
         </div>
       </motion.div>

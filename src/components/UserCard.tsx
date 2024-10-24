@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { X, Github, Linkedin, Mail } from 'lucide-react';
-import { FaPinterest, FaDeviantart } from 'react-icons/fa';
 import userImage from '../assets/user.jpg'; // Import the image
 
 interface UserCardProps {
@@ -20,6 +19,10 @@ const UserCard: React.FC<UserCardProps> = ({
   theme,
 }) => {
   const isDark = theme === 'dark';
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-100, 100], [30, -30]);
+  const rotateY = useTransform(x, [-100, 100], [-30, 30]);
 
   return (
     <motion.div
@@ -33,6 +36,11 @@ const UserCard: React.FC<UserCardProps> = ({
         onClick={onClose}
       />
       <motion.div
+        style={{ x, y, rotateX, rotateY, z: 100 }}
+        drag
+        dragElastic={0.16}
+        dragConstraints={{ top: -50, left: -50, right: 50, bottom: 50 }}
+        whileTap={{ cursor: 'grabbing' }}
         className={`relative w-full max-w-md p-6 rounded-2xl shadow-2xl ${
           isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
         }`}
@@ -61,22 +69,40 @@ const UserCard: React.FC<UserCardProps> = ({
               className='w-full h-full object-cover'
             />
           </motion.div>
-          <h2 className='text-2xl font-bold text-center mb-1'>{name}</h2>
-          <p
+          <motion.h2
+            className='text-2xl font-bold text-center mb-1'
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            {name}
+          </motion.h2>
+          <motion.p
             className={`text-sm font-semibold text-center mb-2 ${
               isDark ? 'text-blue-400' : 'text-blue-600'
             }`}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
             {status}
-          </p>
-          <p
+          </motion.p>
+          <motion.p
             className={`text-center mb-4 ${
               isDark ? 'text-gray-300' : 'text-gray-600'
             }`}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
           >
             {role}
-          </p>
-          <div className='flex flex-wrap justify-center gap-4 mb-6'>
+          </motion.p>
+          <motion.div
+            className='flex flex-wrap justify-center gap-4 mb-6'
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             <SocialIcon
               icon={<Github size={20} />}
               href='https://github.com/pavan1419'
@@ -88,28 +114,21 @@ const UserCard: React.FC<UserCardProps> = ({
               theme={theme}
             />
             <SocialIcon
-              icon={<FaPinterest size={20} />}
-              href='https://in.pinterest.com/pinperfect1419/'
-              theme={theme}
-            />
-            <SocialIcon
-              icon={<FaDeviantart size={20} />}
-              href='https://www.deviantart.com/ptechhat'
-              theme={theme}
-            />
-            <SocialIcon
               icon={<Mail size={20} />}
               href='mailto:pavan01419@gmail.com'
               theme={theme}
             />
-          </div>
-          <p
+          </motion.div>
+          <motion.p
             className={`text-sm text-center ${
               isDark ? 'text-gray-400' : 'text-gray-600'
             }`}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            "Bringing anime-inspired creativity to software development."
-          </p>
+            "Bringing inspired creativity to software development."
+          </motion.p>
         </div>
       </motion.div>
     </motion.div>
@@ -125,18 +144,26 @@ interface SocialIconProps {
 const SocialIcon: React.FC<SocialIconProps> = ({ icon, href, theme }) => {
   const isDark = theme === 'dark';
   return (
-    <a
+    <motion.a
       href={href}
       target='_blank'
       rel='noopener noreferrer'
-      className={`p-2 rounded-full transition-colors duration-200 ${
+      className={`p-3 rounded-full transition-all duration-300 ${
         isDark
-          ? 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
-          : 'bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-black'
+          ? 'bg-gray-700 hover:bg-blue-600 text-gray-300 hover:text-white'
+          : 'bg-gray-200 hover:bg-blue-500 text-gray-700 hover:text-white'
       }`}
+      whileHover={{ scale: 1.1, rotate: 5, z: 20 }}
+      whileTap={{ scale: 0.9 }}
     >
-      {icon}
-    </a>
+      <motion.div
+        initial={{ rotate: 0 }}
+        whileHover={{ rotate: 360 }}
+        transition={{ duration: 0.3 }}
+      >
+        {icon}
+      </motion.div>
+    </motion.a>
   );
 };
 

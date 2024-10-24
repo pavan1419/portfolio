@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import { FaPinterest, FaDeviantart } from 'react-icons/fa';
+import { SiPeerlist } from 'react-icons/si'; // Import the Peerlist icon
 
 interface ContactProps {
   theme: 'light' | 'dark';
@@ -37,6 +38,11 @@ const Contact: React.FC<ContactProps> = ({ theme }) => {
       label: 'DeviantArt',
     },
     { icon: FiMail, url: 'mailto:pavan01419@gmail.com', label: 'Email' },
+    {
+      icon: SiPeerlist,
+      url: 'https://peerlist.io/pavan419',
+      label: 'Peerlist',
+    },
   ];
 
   return (
@@ -66,7 +72,7 @@ const Contact: React.FC<ContactProps> = ({ theme }) => {
         something amazing together!
       </motion.p>
       <motion.div
-        className='flex flex-wrap justify-center gap-4 sm:gap-6'
+        className='flex flex-wrap justify-center gap-6 sm:gap-8'
         variants={variants}
       >
         {socialLinks.map((link, index) => (
@@ -94,26 +100,39 @@ const SocialCard: React.FC<SocialCardProps> = ({
     href={url}
     target='_blank'
     rel='noopener noreferrer'
-    className={`flex flex-col items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-2xl shadow-lg transition-all duration-300 ${
-      theme === 'dark'
-        ? 'bg-gray-700 hover:bg-gray-600'
-        : 'bg-gray-100 hover:bg-gray-200'
+    className={`relative flex flex-col items-center justify-center w-28 h-28 sm:w-36 sm:h-36 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${
+      theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
     }`}
     whileHover={{ scale: 1.05, rotate: 5 }}
     whileTap={{ scale: 0.95 }}
   >
-    <Icon
-      className={`text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-3 ${
-        theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
-      }`}
+    <motion.div
+      className='absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 opacity-0 transition-opacity duration-300'
+      whileHover={{ opacity: 0.8 }}
     />
-    <span
-      className={`font-semibold text-sm sm:text-base md:text-lg ${
-        theme === 'dark' ? 'text-blue-300' : 'text-blue-700'
-      }`}
+    <motion.div
+      className='relative z-10 flex flex-col items-center'
+      whileHover={{ y: -5 }}
     >
-      {label}
-    </span>
+      <Icon
+        className={`text-4xl sm:text-5xl mb-2 sm:mb-3 transition-colors duration-300 ${
+          theme === 'dark' ? 'text-blue-300' : 'text-blue-600'
+        } group-hover:text-white`}
+      />
+      <span
+        className={`font-semibold text-sm sm:text-base transition-colors duration-300 ${
+          theme === 'dark' ? 'text-blue-200' : 'text-blue-700'
+        } group-hover:text-white`}
+      >
+        {label}
+      </span>
+    </motion.div>
+    <motion.div
+      className='absolute bottom-0 left-0 right-0 h-1 bg-blue-500'
+      initial={{ scaleX: 0 }}
+      whileHover={{ scaleX: 1 }}
+      transition={{ duration: 0.3 }}
+    />
   </motion.a>
 );
 

@@ -14,8 +14,8 @@ export const projects = [
       'Chakra UI',
       'React Spring',
     ],
-    link: 'https://example.com/servease',
-    github: 'https://github.com/yourusername/servease',
+    link: '/',
+    github: 'https://github.com/pavan1419/Server_Demo',
   },
   {
     title: 'UrlShrink',
@@ -24,8 +24,8 @@ export const projects = [
     icon: 'Code',
     iconColor: 'text-green-500',
     technologies: ['Node.js', 'Express', 'MongoDB', 'Mongoose'],
-    link: 'https://example.com/urlshrink',
-    github: 'https://github.com/yourusername/urlshrink',
+    link: '/',
+    github: 'https://github.com/pavan1419/UrlShort',
   },
   {
     title: 'Be_Anonim',
@@ -41,8 +41,8 @@ export const projects = [
       'Polipo',
       'Privoxy',
     ],
-    link: 'https://example.com/be-anonim',
-    github: 'https://github.com/yourusername/be-anonim',
+    link: '/',
+    github: 'https://github.com/pavan1419/Be_Anonim',
   },
   {
     title: '5S Auditing App',
@@ -51,8 +51,8 @@ export const projects = [
     icon: 'Code',
     iconColor: 'text-red-500',
     technologies: ['Mendix', 'REST APIs', 'SSO'],
-    link: 'https://example.com/5s-auditing',
-    github: 'https://github.com/yourusername/5s-auditing',
+    link: '/',
+    github: '/',
   },
   {
     title: 'Admin Security Register',
@@ -61,17 +61,7 @@ export const projects = [
     icon: 'Shield',
     iconColor: 'text-yellow-500',
     technologies: ['Mendix', 'Data Management'],
-    link: 'https://example.com/admin-security',
-    github: 'https://github.com/yourusername/admin-security',
-  },
-  {
-    title: 'FOD Detection',
-    description:
-      'Foreign Object Detection application with data filters and bug resolution.',
-    icon: 'Code',
-    iconColor: 'text-indigo-500',
-    technologies: ['Mendix', 'Data Filtering'],
-    link: 'https://example.com/fod-detection',
-    github: 'https://github.com/yourusername/fod-detection',
+    link: '/',
+    github: '/',
   },
 ];
