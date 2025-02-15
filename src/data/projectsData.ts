@@ -1,5 +1,15 @@
 export const projects = [
   {
+    title: 'mern-mini-apps',
+    description:
+      'A collection of small applications developed using the MERN stack, demonstrating practical examples of full-stack web development.',
+    icon: 'AppStore',
+    iconColor: 'text-teal-500',
+    technologies: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Vite'],
+    link: 'https://mern-mini-apps.vercel.app/',
+    github: 'https://github.com/pavan1419/mern-mini-apps',
+  },
+  {
     title: 'ServEase',
     description:
       'A full-stack MERN web app with user authentication, admin panel for managing users, and contacts.',
@@ -14,8 +24,8 @@ export const projects = [
       'Chakra UI',
       'React Spring',
     ],
-    link: '/',
-    github: 'https://github.com/pavan1419/Server_Demo',
+    link: 'https://service-six-tau.vercel.app/',
+    github: 'https://github.com/pavan1419',
   },
   {
     title: 'UrlShrink',
@@ -51,8 +61,7 @@ export const projects = [
     icon: 'Code',
     iconColor: 'text-red-500',
     technologies: ['Mendix', 'REST APIs', 'SSO'],
-    link: '/',
-    github: '/',
+    link: 'https://www.mendix.com/',
   },
   {
     title: 'Admin Security Register',
@@ -61,7 +70,6 @@ export const projects = [
     icon: 'Shield',
     iconColor: 'text-yellow-500',
     technologies: ['Mendix', 'Data Management'],
-    link: '/',
-    github: '/',
+    link: 'https://www.mendix.com/',
   },
 ];

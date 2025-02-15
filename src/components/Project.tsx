@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Server, Code, Shield } from 'lucide-react';
+import { Github, Server, Code, Shield, ExternalLink } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { projects } from '../data/projectsData';
 
@@ -9,7 +9,8 @@ interface Project {
   title: string;
   description: string;
   technologies: string[];
-  github: string;
+  github?: string;
+  link?: string;
   icon: string;
   iconColor?: string;
 }
@@ -73,6 +74,8 @@ const ProjectCard: FC<{ project: Project; theme: string }> = ({
         return Code;
       case 'Shield':
         return Shield;
+      case 'AppStore':
+        return ExternalLink;
       default:
         return null;
     }
@@ -113,20 +116,37 @@ const ProjectCard: FC<{ project: Project; theme: string }> = ({
           </span>
         ))}
       </div>
-      <div className='flex justify-center items-center mt-6'>
-        <a
-          href={project.github}
-          target='_blank'
-          rel='noopener noreferrer'
-          className={`inline-flex items-center px-4 py-2 rounded-full transition-colors duration-300 ${
-            isDark
-              ? 'bg-gray-600 text-white hover:bg-gray-500'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          <Github className='mr-2' size={18} />
-          Source Code
-        </a>
+      <div className='flex justify-center items-center mt-6 space-x-4'>
+        {project.github && (
+          <a
+            href={project.github}
+            target='_blank'
+            rel='noopener noreferrer'
+            className={`inline-flex items-center px-4 py-2 rounded-full transition-colors duration-300 ${
+              isDark
+                ? 'bg-gray-600 text-white hover:bg-gray-500'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            <Github className='mr-2' size={18} />
+            Source Code
+          </a>
+        )}
+        {project.link && (
+          <a
+            href={project.link}
+            target='_blank'
+            rel='noopener noreferrer'
+            className={`inline-flex items-center px-4 py-2 rounded-full transition-colors duration-300 ${
+              isDark
+                ? 'bg-gray-600 text-white hover:bg-gray-500'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            <ExternalLink className='mr-2' size={18} />
+            Live Project
+          </a>
+        )}
       </div>
     </motion.div>
   );
